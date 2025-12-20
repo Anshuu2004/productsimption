@@ -1,0 +1,1065 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 23, 2025 at 10:15 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance_types`
+--
+
+CREATE TABLE `attendance_types` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `short_desc` varchar(512) DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attendance_types`
+--
+
+INSERT INTO `attendance_types` (`id`, `slug`, `title`, `short_desc`, `content`, `image`, `created_at`, `updated_at`) VALUES
+(1, 'rfid', 'RFID Attendance', 'Contactless RFID-based attendance systems for fast scanning.', '<p>RFID attendance systems use tags/cards and readers to record presence. Ideal for large institutions and factories. Features include bulk reads, logging, and export.</p>', 'att_rfid.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(2, 'face', 'Face Recognition Attendance', 'Biometric face recognition for secure attendance.', '<p>Face recognition systems use camera + ML models to identify users with high accuracy. Option for temperature check and mask detection.</p>', 'att_face.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(3, 'fingerprint', 'Fingerprint Attendance', 'Classic biometric fingerprint-based attendance units.', '<p>Fingerprint readers are compact and reliable. Good for small-to-medium offices. Provide template storage and tamper-proof logs.</p>', 'att_fingerprint.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(4, 'qr', 'qr code attendance', 'QR code based self-attendance using mobile phones.', '<p>Generate QR codes per session or user; scan via mobile or scanner. Works well for remote or soft-attendance use-cases.</p>', 'att_qr.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(5, 'barcode', 'Barcode Attendance', 'Barcode scanning attendance for printed cards.', '<p>Barcode readers integrate easily with legacy systems. Low cost and simple to deploy.</p>', 'att_barcode.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(6, 'geo', 'Geo-fencing Self Attendance', 'Location based self-attendance using geofencing.', '<p>Geo-fencing requires mobile GPS. Ensures attendance only within predefined geolocation boundaries.</p>', 'att_geo.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(7, 'manual', 'Manual From Software', 'Manual entry and admin-corrected attendance.', '<p>Admin portal for manual corrections, leave entries, and approvals. Useful for exceptions and one-off edits.</p>', 'att_manual.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `slug`, `created_at`) VALUES
+(1, 'Attendance Management Systems', 'attendance', '2025-10-16 03:48:52'),
+(2, 'Lanyards & Ribbons', 'lanyard', '2025-10-16 03:48:52'),
+(3, 'Badges & Reels', 'badge', '2025-10-16 03:48:52'),
+(4, 'ERP Software', 'erp', '2025-10-16 03:48:52'),
+(5, 'ID Cards', 'id-cards', '2025-11-16 12:54:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clients`
+--
+
+CREATE TABLE `clients` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `clients`
+--
+
+INSERT INTO `clients` (`id`, `name`, `city`, `logo`, `created_at`, `updated_at`) VALUES
+(1, 'KidZee World', 'Delhi', 'client_greenfield.png', '2025-10-08 00:21:44', '2025-11-17 10:42:25'),
+(2, 'Rising College', 'Mumbai', 'client_rising.png', '2025-10-08 00:21:44', '2025-10-15 07:14:53'),
+(3, 'Diamond Public School', 'Bangalore', 'client_alpha.png', '2025-10-08 00:21:44', '2025-11-17 10:42:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `subject`, `message`, `created_at`) VALUES
+(1, 'abhishek', 'hello@gmail.com', 'price', 'tell me the price of id cards', '2025-10-15 12:01:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `erp_modules`
+--
+
+CREATE TABLE `erp_modules` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(100) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `erp_modules`
+--
+
+INSERT INTO `erp_modules` (`id`, `slug`, `title`, `description`) VALUES
+(1, 'school', 'School Management System', 'Complete school ERP with admissions, exams, fees, and HR.'),
+(2, 'attendance', 'Attendance Management System', 'Module to centralize and analyze attendance across devices.'),
+(3, 'college', 'College Management System', 'Higher-education ERP for departments, courses, and grading.'),
+(4, 'payroll', 'Payroll Management System', 'Payroll, payslips, and statutory reports.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT 0.00,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `category_id`, `title`, `description`, `price`, `image`, `created_at`, `updated_at`) VALUES
+(1, 5, 'RFID-Card', 'The RFID PVC Card - Standard is a high-quality identification card embedded with RFID technology for secure access control and identification purposes. This card is manufactured using premium PVC material that ensures durability and longevity. The card features a standard CR80 size (85.6mm x 54mm) that fits perfectly in wallets and card holders. The embedded RFID chip allows for contactless reading, making it ideal for access control systems, employee identification, student ID cards, and membership cards. The card surface is printable on both sides using standard card printers, allowing for customization with logos, photos, and text. The PVC material provides resistance to wear and tear, ensuring the card maintains its appearance and functionality over extended use.
+
+Specifications:
+- Material: High-grade PVC (Polyvinyl Chloride)
+- Technology: Embedded RFID chip (13.56MHz or 125kHz frequency)
+- Dimensions: CR80 standard (85.6mm x 54mm x 0.76mm)
+- Print Area: Full surface printable on both sides
+- Operating Temperature: -20°C to +60°C
+- Storage Temperature: -30°C to +70°C
+- Humidity Resistance: 10% to 90% non-condensing
+- Read Distance: 0-10cm (depending on reader)
+- Memory Capacity: 1KB to 4KB (varies by chip type)
+- Data Retention: Up to 10 years
+- Write Cycles: Minimum 100,000 cycles
+- Compatibility: Works with most standard RFID readers
+- Security Features: Password protection, data encryption capabilities
+- Standards Compliance: ISO/IEC 14443, ISO/IEC 15693 (depending on chip)', 120.00, 'id-card-rfid-pvc.png', '2025-10-08 00:21:44', '2025-11-17 00:16:14'),
+(2, 5, 'PVC Card', 'The PVC Card is a premium quality identification card made from high-grade polyvinyl chloride (PVC) material, offering excellent durability and professional appearance. This standard CR80 sized card (85.6mm x 54mm) is ideal for employee ID cards, student identification, membership cards, and access control applications. The card features a smooth, glossy surface that accepts high-quality printing using standard card printers, dye-sublimation printers, or laser engraving equipment. The PVC material is resistant to bending, scratching, and fading, ensuring long-lasting performance in daily use. With its professional look and feel, this card is perfect for organizations that want to present a polished image while providing reliable identification solutions. The card can be customized with full-color graphics, photos, barcodes, and magnetic stripes upon request.
+
+Specifications:
+- Material: High-grade PVC (Polyvinyl Chloride)
+- Dimensions: CR80 standard (85.6mm x 54mm x 0.76mm)
+- Thickness: 0.76mm (30 mil)
+- Surface Finish: Glossy on both sides
+- Print Compatibility: Compatible with direct-to-card and retransfer printers
+- Operating Temperature: -20°C to +60°C
+- Storage Temperature: -30°C to +70°C
+- Humidity Resistance: 10% to 90% non-condensing
+- Durability: Resistant to bending, scratching, and fading
+- Print Area: Full surface coverage on both sides
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: ISO/IEC 7810 ID-1 format
+- Optional Features: Magnetic stripe, barcode, holographic overlay available
+- Lifespan: 3-5 years under normal usage conditions', 100.00, 'id-card-pvc.png', '2025-10-08 00:21:44', '2025-11-17 00:16:14'),
+(3, 2, 'Polyester Lanyards', 'Our Polyester Lanyards are premium quality identification accessories made from durable polyester material that offers excellent color retention and long-lasting performance. These lanyards feature a smooth, soft texture that is comfortable to wear while providing superior strength and resistance to fraying. The polyester material is ideal for sublimation printing, allowing for vibrant, full-color designs that won\'t fade or crack over time. With a standard width of 20mm and adjustable length, these lanyards are perfect for employee ID cards, visitor passes, and event badges. The durable construction ensures they can withstand daily use in various environments, from corporate offices to industrial settings. Available with various attachment options including breakaway clips, lobster clasps, and metal swivels for added safety and convenience.
+
+Specifications:
+- Material: High-quality polyester fabric
+- Width: 20mm (standard), custom widths available
+- Length: 900mm (adjustable), custom lengths available
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Full-color printing, custom sizes, logo placement', 40.00, 'lanyard-polyester.png', '2025-10-08 00:21:44', '2025-11-17 00:24:28'),
+(4, 5, 'Pouch Card', 'The Pouch Card is a versatile identification solution that combines the durability of a protective pouch with the convenience of a standard card format. This innovative design features a clear PVC pouch that securely holds a standard CR80 card (85.6mm x 54mm) while providing additional protection against wear, moisture, and damage. The pouch design allows for easy insertion and replacement of identification cards, making it ideal for temporary IDs, visitor passes, and multi-purpose access cards. The clear pouch material ensures complete visibility of the enclosed card while offering protection from bending, scratching, and environmental factors. The card can be easily attached to lanyards, keychains, or badges using the integrated attachment points. This solution is perfect for organizations that require flexible identification systems with the ability to update or change cards as needed without replacing the entire ID system.
+
+Specifications:
+- Pouch Material: Clear PVC or PETG
+- Card Compatibility: Standard CR80 size (85.6mm x 54mm)
+- Pouch Dimensions: 90mm x 60mm (with sealing margin)
+- Thickness: 0.5mm pouch material
+- Attachment Options: Lanyard hole, keychain loop, clip attachment
+- Print Area: Full visibility of enclosed card
+- Durability: Water-resistant and tear-resistant
+- Operating Temperature: -10°C to +50°C
+- Storage Temperature: -20°C to +60°C
+- Humidity Resistance: Up to 80% non-condensing
+- Security Features: Tamper-evident sealing options
+- Edge Quality: Heat-sealed edges for durability
+- Standards Compliance: Meets general ID card standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Available in different colors and sizes', 80.00, 'id-card-pouch.png', '2025-11-16 21:33:30', '2025-11-17 00:24:28'),
+(5, 3, 'Plastic Badge - 75x50mm', 'The Plastic Badge - 75x50mm is a durable and professional identification solution designed for temporary or permanent use in various environments. This badge features a sturdy plastic construction that resists bending, cracking, and fading, ensuring long-lasting performance. The compact 75x50mm size makes it ideal for attaching to uniforms, clothing, or lanyards while maintaining visibility. The smooth surface accepts high-quality printing, allowing for clear text, logos, and graphics that enhance your organization\'s professional image. With its lightweight design and secure attachment options, this badge is perfect for employee identification, visitor passes, and event credentials. The plastic material is easy to clean and maintain, making it suitable for use in healthcare, hospitality, retail, and industrial settings. Available with various attachment methods including clips, pins, and magnetic backs for versatile application.
+
+Specifications:
+- Material: Durable plastic (PVC or ABS)
+- Dimensions: 75mm x 50mm x 2mm
+- Thickness: 2mm standard
+- Surface Finish: Smooth, printable surface
+- Print Area: Full surface coverage
+- Print Compatibility: Compatible with standard badge printers
+- Attachment Options: Clip, pin, magnetic back available
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Full-color printing, custom shapes available', 35.00, 'badge-plastic.png', '2025-10-08 00:21:44', '2025-11-17 00:33:38'),
+(6, 3, 'Metal Badge - Premium', 'The Metal Badge - Premium is a high-quality identification solution crafted from durable metal materials for a professional and prestigious appearance. This badge features a sleek, polished finish that exudes quality and sophistication, making it ideal for executive identification, security personnel, and premium membership cards. The robust metal construction ensures exceptional durability and longevity, withstanding daily wear and tear in demanding environments. The badge can be customized with engraved text, logos, and intricate designs that maintain their clarity and sharpness over time. With its substantial weight and premium feel, this badge conveys authority and professionalism. The metal surface can be finished in various options including brushed, polished, or matte finishes to suit your organization\'s aesthetic preferences. Perfect for corporate executives, security personnel, military applications, and high-end membership programs where a premium identification solution is required.
+
+Specifications:
+- Material: High-grade metal (stainless steel, brass, or aluminum)
+- Dimensions: 75mm x 50mm x 3mm (standard)
+- Thickness: 3mm standard
+- Surface Finish: Brushed, polished, or matte options
+- Engraving Method: Laser engraving or chemical etching
+- Attachment Options: Pin, clip, or chain attachment
+- Durability: Exceptional resistance to wear and corrosion
+- Operating Temperature: -20°C to +80°C
+- Storage Temperature: -30°C to +90°C
+- Humidity Resistance: Up to 95% non-condensing
+- Edge Quality: Precision cut with polished edges
+- Standards Compliance: Meets premium badge standards
+- Lifespan: 5-10 years under normal usage conditions
+- Customization: Engraved text, logos, custom shapes available
+- Special Features: Color-fill options for engraved areas', 150.00, 'badge-metal.png', '2025-10-08 00:21:44', '2025-11-17 00:36:12'),
+(7, 2, 'Nylon Lanyards', 'Our Nylon Lanyards are premium quality identification accessories made from strong and durable nylon material that offers excellent strength and longevity. These lanyards feature a smooth, soft texture that is comfortable to wear while providing superior durability and resistance to fraying. The nylon material is ideal for sublimation printing, allowing for vibrant, full-color designs that won\'t fade or crack over time. With a standard width of 20mm and adjustable length, these lanyards are perfect for employee ID cards, visitor passes, and event badges. The durable construction ensures they can withstand daily use in various environments, from corporate offices to industrial settings. Available with various attachment options including breakaway clips, lobster clasps, and metal swivels for added safety and convenience. The nylon fabric is lightweight yet strong, making it an excellent choice for extended wear without discomfort.
+
+Specifications:
+- Material: High-quality nylon fabric
+- Width: 20mm (standard), custom widths available
+- Length: 900mm (adjustable), custom lengths available
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Full-color printing, custom sizes, logo placement', 45.00, 'lanyard-nylon.png', '2025-11-16 21:38:03', '2025-11-17 00:37:46'),
+(8, 2, 'Lanyard Prints', 'Our Lanyard Prints service offers custom-designed lanyards with high-quality printing to showcase your brand, logo, or message with vibrant colors and sharp details. These printed lanyards are made from premium polyester or nylon material that ensures durability and long-lasting performance. Using advanced sublimation printing technology, we create full-color designs that won\'t fade, crack, or peel over time, even with regular use and washing. Our printing process allows for complete customization, including your company logo, tagline, artwork, or any graphics that represent your brand identity. The lanyards feature a smooth, soft texture that is comfortable to wear while providing superior strength and resistance to fraying. With a standard width of 20mm and adjustable length, these printed lanyards are perfect for employee ID cards, visitor passes, and event badges. The durable construction ensures they can withstand daily use in various environments, from corporate offices to industrial settings. Available with various attachment options including breakaway clips, lobster clasps, and metal swivels for added safety and convenience.
+
+Specifications:
+- Material: High-quality polyester or nylon fabric
+- Width: 20mm (standard), custom widths available
+- Length: 900mm (adjustable), custom lengths available
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Full-color printing, custom sizes, logo placement', 60.00, 'lanyard-printed.png', '2025-11-16 21:38:03', '2025-11-17 00:39:10'),
+(9, 2, 'Customized Lanyards', 'Our Customized Lanyards service provides fully personalized lanyard solutions tailored to your specific requirements and brand identity. These custom lanyards are crafted from premium quality polyester or nylon material, ensuring durability and long-lasting performance. We offer complete customization options including unique shapes, sizes, colors, and printing designs to perfectly match your organization\'s aesthetic and functional needs. Using advanced sublimation printing technology, we create vibrant, high-resolution designs that won\'t fade, crack, or peel over time, even with regular use and washing. Our custom lanyards can feature your company logo, tagline, artwork, or any graphics that represent your brand identity. With various width options from 10mm to 25mm and adjustable lengths, these lanyards are perfect for employee ID cards, visitor passes, event badges, and promotional giveaways. Available with a wide range of attachment options including breakaway clips, lobster clasps, metal swivels, and custom hardware for added safety and convenience. Our design team works closely with you to create the perfect lanyard that meets your exact specifications.
+
+Specifications:
+- Material: High-quality polyester or nylon fabric
+- Width: 10mm to 25mm (customizable), standard 20mm
+- Length: 800mm to 1000mm (customizable), standard 900mm
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel, custom hardware
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Full-color pr... [truncated]', 60.00, 'lanyard_print.png', '2025-11-16 21:38:03', '2025-11-17 00:39:10'),
+(11, 1, 'RFID Attendance Machine', 'The RFID Attendance Machine is a sophisticated access control and time tracking solution designed for efficient employee attendance management in corporate offices, schools, and industrial environments. This advanced system utilizes RFID technology to accurately record employee check-ins and check-outs with minimal effort and maximum precision. The machine features a high-sensitivity RFID reader that can quickly scan RFID cards, tags, or badges from a distance of up to 10cm, ensuring fast and reliable identification. With its robust construction and weather-resistant design, this attendance machine is suitable for both indoor and outdoor installations. The device includes a clear LCD display that shows real-time information including employee ID, time, and date, providing immediate feedback to users. The system can store thousands of attendance records internally and can be easily connected to a computer via USB or network connection for data transfer and management. With its user-friendly interface and simple operation, employees can quickly scan their RFID cards to clock in or out, reducing queue times and improving workplace efficiency.
+
+Specifications:
+- Technology: 13.56MHz or 125kHz RFID reader
+- Reading Distance: 0-10cm (depending on card type)
+- Display: LCD screen for real-time information
+- Storage Capacity: Up to 100,000 records
+- Communication: USB, Ethernet, or Wi-Fi connectivity
+- Power Supply: 12V DC adapter or battery backup
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: 10% to 90% non-condensing
+- Dimensions: 200mm x 120mm x 40mm
+- Weight: 500g (excluding accessories)
+- Mounting Options: Wall mount or stand mount
+- Security Features: Password protection, data encryption
+- Standards Compliance: ISO/IEC 14443, ISO/IEC 15693
+- Lifespan: 5-7 years under normal usage conditions', 6499.00, 'attendance-rfid-machine.pn... [truncated]', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(12, 1, 'Face Recognition Machine', 'The Face Recognition Machine is an advanced biometric identification and access control solution that utilizes cutting-edge facial recognition technology for secure and contactless identification. This intelligent system employs high-resolution cameras and sophisticated AI algorithms to accurately identify individuals by analyzing unique facial features and characteristics. The machine features a high-sensitivity camera with infrared capabilities that ensures accurate recognition even in low-light conditions or complete darkness. With its fast processing speed, the system can identify individuals within seconds, making it ideal for high-traffic environments such as office buildings, schools, and residential complexes. The device includes a clear LCD touchscreen display that provides real-time feedback and user interaction, allowing for easy navigation and system management. The system can store thousands of facial templates securely and can be easily connected to a computer or network for data transfer and management. With its touchless operation, this face recognition machine provides a hygienic and convenient solution for access control, attendance tracking, and security monitoring. The system also includes advanced anti-spoofing technology to prevent unauthorized access using photographs or videos.
+
+Specifications:
+- Technology: AI-based facial recognition with 3D depth sensing
+- Camera Resolution: 2MP HD camera with infrared capabilities
+- Recognition Speed: Less than 1 second
+- Recognition Accuracy: 99.5% accuracy rate
+- Storage Capacity: Up to 50,000 facial templates
+- Communication: USB, Ethernet, or Wi-Fi connectivity
+- Power Supply: 12V DC adapter
+- Operating Temperature: -10°C to +50°C
+- Storage Temperature: -20°C to +60°C
+- Humidity Resistance: 10% to 80% non-condensing
+- Dimensions: 180mm x 120mm x 45mm
+- Weight: 600g (excluding accessories)
+- Mounting Options: Wall mount or stand mount
+- Security Features: Password protection, data encryption
+- Standards Compliance: ISO/IEC 14443, ISO/IEC 15693
+- Lifespan: 5-7 years under normal usage conditions', 6499.00, 'attendance-face-scanner.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(13, 1, 'Fingerprint Scanner Unit', 'The Fingerprint Scanner Unit is a reliable biometric identification and access control solution that utilizes advanced fingerprint recognition technology for secure and efficient identification. This sophisticated system employs high-resolution optical or capacitive sensors to accurately capture and analyze unique fingerprint patterns for precise identification. The scanner features a durable construction with a scratch-resistant sensing surface that ensures long-lasting performance and consistent accuracy. With its fast processing speed, the system can authenticate individuals within seconds, making it ideal for high-traffic environments such as office buildings, data centers, and restricted access areas. The device includes clear LED indicators that provide real-time feedback during the scanning process, ensuring users know when to place their finger and when authentication is complete. The system can store thousands of fingerprint templates securely and can be easily connected to a computer or access control system via USB or network connection for seamless integration. With its touch-based operation, this fingerprint scanner provides a hygienic and convenient solution for access control, time attendance tracking, and security monitoring. The system also includes advanced anti-spoofing technology to prevent unauthorized access using artificial fingerprints or photographs.
+
+Specifications:
+- Technology: Optical or capacitive fingerprint sensor
+- Sensor Resolution: 500 DPI high-resolution scanning
+- Scanning Speed: Less than 1 second
+- Recognition Accuracy: 99.5% accuracy rate
+- Storage Capacity: Up to 3,000 fingerprint templates
+- Communication: USB, RS232, or Wi-Fi connectivity
+- Power Supply: 5V DC via USB or 12V DC adapter
+- Operating Temperature: -10°C to +50°C
+- Storage Temperature: -20°C to +60°C
+- Humidity Resistance: 10% to 80% non-condensing
+- Dimensions: 150mm x 100mm x 40mm
+-...
+[truncated]', 6499.00, 'attendance-fingerprint-scanner.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(14, 1, 'QR/Barcode Scanner', 'The QR/Barcode Scanner is a versatile and efficient identification and data capture solution designed for quick and accurate scanning of QR codes and barcodes. This advanced scanning device utilizes high-resolution imaging technology and sophisticated decoding algorithms to rapidly read various types of 1D and 2D codes, including QR codes, Data Matrix, PDF417, and traditional barcodes. The scanner features a durable construction with an ergonomic design that ensures comfortable handling during extended use periods. With its fast scanning speed, the system can decode codes within milliseconds, making it ideal for retail environments, inventory management, access control, and asset tracking applications. The device includes clear LED indicators and audible feedback that provide real-time confirmation when codes are successfully scanned. The system can be easily connected to a computer or mobile device via USB or wireless connectivity options for seamless data transfer and integration with existing software systems. With its plug-and-play operation, this QR/Barcode scanner provides a convenient solution for point-of-sale transactions, inventory management, visitor registration, and security monitoring. The scanner also includes advanced error correction technology to ensure accurate reading even from damaged or poorly printed codes.
+
+Specifications:
+- Technology: 1D and 2D barcode scanning with CMOS sensor
+- Scan Speed: Up to 100 scans per second
+- Scan Distance: 50mm to 200mm (varies by code type)
+- Supported Codes: QR Code, Data Matrix, PDF417, Code 128, EAN-13, UPC-A, and more
+- Decoding Accuracy: 99.9% accuracy rate
+- Communication: USB, Bluetooth, or Wi-Fi connectivity
+- Power Supply: 5V DC via USB or internal rechargeable battery
+- Operating Temperature: -10°C to +50°C
+- Storage Temperature: -20°C to +60°C
+- Humidity Resistance: 10% to 80% non-condensing
+- Dimensions: 160mm x 70mm x 40mm
+- W... [truncated]', 6499.00, 'barcode-scanner.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(15, 5, 'PVC Card - Standard', 'The UV-Card is a premium identification solution that utilizes advanced UV printing technology to create vibrant, high-resolution images with exceptional durability. This card is manufactured using high-quality PVC material and features full-color UV printing that produces sharp text, vivid graphics, and detailed photographs with fade-resistant inks. The UV printing process embeds the image directly into the card surface, making it highly resistant to scratching, fading, and wear. The card maintains a professional appearance over extended use, making it ideal for employee ID cards, membership cards, and access control applications. The UV printing technology allows for edge-to-edge printing coverage, ensuring maximum visual impact. With its superior print quality and long-lasting durability, the UV-Card is perfect for organizations that require premium identification solutions with a polished, professional look.
+
+Specifications:
+- Printing Technology: UV direct-to-card printing
+- Material: High-grade PVC (Polyvinyl Chloride)
+- Dimensions: CR80 standard (85.6mm x 54mm x 0.76mm)
+- Print Resolution: Up to 1200 DPI
+- Print Area: Full surface coverage (edge-to-edge)
+- Color Depth: 24-bit color (16.7 million colors)
+- Surface Finish: Glossy or matte options available
+- Durability: Scratch-resistant UV coating
+- Fade Resistance: Excellent UV stability
+- Operating Temperature: -20°C to +60°C
+- Storage Temperature: -30°C to +70°C
+- Humidity Resistance: 10% to 90% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: ISO/IEC 7810 ID-1 format
+- Lifespan: 5-7 years under normal usage conditions
+- Special Features: Holographic overlay options available', 100.00, 'id-card-uv-printed-pvc.png', '2025-11-16 21:25:39', '2025-11-17 00:24:28'),
+(16, 5, 'Pouch Card', 'The Pouch Card is a versatile identification solution that combines the durability of a protective pouch with the convenience of a standard card format. This innovative design features a clear PVC pouch that securely holds a standard CR80 card (85.6mm x 54mm) while providing additional protection against wear, moisture, and damage. The pouch design allows for easy insertion and replacement of identification cards, making it ideal for temporary IDs, visitor passes, and multi-purpose access cards. The clear pouch material ensures complete visibility of the enclosed card while offering protection from bending, scratching, and environmental factors. The card can be easily attached to lanyards, keychains, or badges using the integrated attachment points. This solution is perfect for organizations that require flexible identification systems with the ability to update or change cards as needed without replacing the entire ID system.
+
+Specifications:
+- Pouch Material: Clear PVC or PETG
+- Card Compatibility: Standard CR80 size (85.6mm x 54mm)
+- Pouch Dimensions: 90mm x 60mm (with sealing margin)
+- Thickness: 0.5mm pouch material
+- Attachment Options: Lanyard hole, keychain loop, clip attachment
+- Print Area: Full visibility of enclosed card
+- Durability: Water-resistant and tear-resistant
+- Operating Temperature: -10°C to +50°C
+- Storage Temperature: -20°C to +60°C
+- Humidity Resistance: Up to 80% non-condensing
+- Security Features: Tamper-evident sealing options
+- Edge Quality: Heat-sealed edges for durability
+- Standards Compliance: Meets general ID card standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Available in different colors and sizes', 80.00, 'id-card-pouch.png', '2025-11-16 21:25:39', '2025-11-17 00:57:11'),
+(17, NULL, 'Nylon Lanyard - 20mm', 'The Nylon Lanyard - 20mm is a premium quality identification accessory made from strong and durable nylon material that offers excellent strength and longevity. This lanyard features a smooth, soft texture that is comfortable to wear while providing superior durability and resistance to fraying. The standard 20mm width is ideal for sublimation printing, allowing for vibrant, full-color designs that won\'t fade or crack over time. With an adjustable length, this lanyard is perfect for employee ID cards, visitor passes, and event badges. The durable construction ensures it can withstand daily use in various environments, from corporate offices to industrial settings. Available with various attachment options including breakaway clips, lobster clasps, and metal swivels for added safety and convenience. The nylon fabric is lightweight yet strong, making it an excellent choice for extended wear without discomfort.
+
+Specifications:
+- Material: High-quality nylon fabric
+- Width: 20mm (standard)
+- Length: 900mm (adjustable)
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions', 45.00, 'lanyard_poly.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(18, NULL, 'Printed Lanyard - Custom', 'The Printed Lanyard - Custom is a premium identification accessory that features high-quality custom printing to showcase your brand, logo, or message with vibrant colors and sharp details. This printed lanyard is made from premium polyester or nylon material that ensures durability and long-lasting performance. Using advanced sublimation printing technology, we create full-color designs that won\'t fade, crack, or peel over time, even with regular use and washing. Our printing process allows for complete customization, including your company logo, tagline, artwork, or any graphics that represent your brand identity. The lanyard features a smooth, soft texture that is comfortable to wear while providing superior strength and resistance to fraying. With a standard width of 20mm and adjustable length, this printed lanyard is perfect for employee ID cards, visitor passes, and event badges. Available with various attachment options including breakaway clips, lobster clasps, and metal swivels for added safety and convenience.
+
+Specifications:
+- Material: High-quality polyester or nylon fabric
+- Width: 20mm (standard)
+- Length: 900mm (adjustable)
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Full-color printing, logo placement', 60.00, 'lanyard_print.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(19, 3, 'Clip Badge - Reusable', 'The Clip Badge - Reusable is a versatile and durable identification solution designed for temporary or permanent use in various environments. This badge features a sturdy plastic construction with a reusable clip mechanism that allows for easy attachment and removal from clothing, uniforms, or lanyards. The compact design makes it ideal for visitor passes, event credentials, and temporary identification needs. The smooth surface accepts high-quality printing, allowing for clear text, logos, and graphics that enhance your organization\'s professional image. With its lightweight design and secure clip attachment, this badge is perfect for situations where quick and easy identification is needed. The plastic material is easy to clean and maintain, making it suitable for use in healthcare, hospitality, retail, and industrial settings. Available with various attachment methods including clips, pins, and magnetic backs for versatile application.
+
+Specifications:
+- Material: Durable plastic (PVC or ABS)
+- Dimensions: 75mm x 50mm x 2mm
+- Thickness: 2mm standard
+- Surface Finish: Smooth, printable surface
+- Print Area: Full surface coverage
+- Print Compatibility: Compatible with standard badge printers
+- Attachment Options: Reusable clip mechanism
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Full-color printing, custom shapes available', 25.00, 'badge-clip.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(20, 3, 'Magnetic Badge - Strong Hold', 'The Magnetic Badge - Strong Hold is a premium identification solution that utilizes a powerful magnetic attachment system for secure and convenient wear. This badge features a sturdy plastic construction with a strong magnetic backing that provides a reliable hold to metal surfaces while allowing for easy removal when needed. The compact 75x50mm size makes it ideal for employee identification, visitor passes, and event credentials. The smooth surface accepts high-quality printing, allowing for clear text, logos, and graphics that enhance your organization\'s professional image. With its strong magnetic hold and professional appearance, this badge is perfect for corporate environments, trade shows, and events where quick and secure identification is required. The magnetic backing provides a strong hold that won\'t easily come loose during normal activities while still allowing for easy removal when necessary.
+
+Specifications:
+- Material: Durable plastic (PVC or ABS) with magnetic backing
+- Dimensions: 75mm x 50mm x 3mm
+- Thickness: 3mm standard (including magnetic backing)
+- Surface Finish: Smooth, printable surface
+- Print Area: Full surface coverage
+- Print Compatibility: Compatible with standard badge printers
+- Attachment Options: Strong magnetic backing
+- Magnetic Strength: Holds securely to metal surfaces
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Full-color printing, custom shapes available', 30.00, 'badge-magnetic.png', '2025-11-16 21:25:39', '2025-11-17 00:59:40'),
+(21, NULL, 'Standard PVC Card', 'The Standard PVC Card is a reliable and cost-effective identification solution made from high-quality polyvinyl chloride (PVC) material. This standard CR80 sized card (85.6mm x 54mm) is perfect for basic employee ID cards, student identification, membership cards, and access control applications. The card features a smooth surface that accepts standard printing methods, making it easy to customize with logos, text, and basic graphics. The PVC material provides good durability and resistance to everyday wear and tear, ensuring the card maintains its appearance over extended use. With its professional look and affordable price point, this card is ideal for organizations seeking a balance between quality and cost-effectiveness for their identification needs.
+
+Specifications:
+- Material: Standard PVC (Polyvinyl Chloride)
+- Dimensions: CR80 standard (85.6mm x 54mm x 0.76mm)
+- Thickness: 0.76mm (30 mil)
+- Surface Finish: Smooth finish on both sides
+- Print Compatibility: Compatible with standard card printers
+- Operating Temperature: -20°C to +60°C
+- Storage Temperature: -30°C to +70°C
+- Humidity Resistance: 10% to 90% non-condensing
+- Durability: Good resistance to bending and scratching
+- Print Area: Full surface coverage on both sides
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: ISO/IEC 7810 ID-1 format
+- Lifespan: 2-3 years under normal usage conditions', 100.00, 'id-card-pvc.png', '2025-11-16 21:28:49', '2025-11-17 00:57:11'),
+(22, NULL, 'Pouch Card Holder', 'The Pouch Card Holder is a protective accessory designed to securely hold and display standard identification cards while providing additional durability and protection. This clear pouch is made from high-quality PVC or PETG material that ensures long-lasting performance and maintains crystal-clear visibility of the enclosed card. The holder features a secure sealing mechanism that prevents cards from falling out while allowing for easy insertion and removal. The pouch design provides protection against moisture, dust, and minor impacts, extending the life of the enclosed ID card. With its standard size compatibility, this pouch holder can accommodate most CR80 sized cards and can be easily attached to lanyards, keychains, or badge clips for convenient carrying.
+
+Specifications:
+- Pouch Material: Clear PVC or PETG
+- Card Compatibility: Standard CR80 size (85.6mm x 54mm)
+- Pouch Dimensions: 90mm x 60mm (with sealing margin)
+- Thickness: 0.4mm pouch material
+- Attachment Options: Lanyard hole, keychain loop
+- Print Area: Full visibility of enclosed card
+- Durability: Water-resistant and tear-resistant
+- Operating Temperature: -10°C to +50°C
+- Storage Temperature: -20°C to +60°C
+- Humidity Resistance: Up to 80% non-condensing
+- Security Features: Secure sealing mechanism
+- Edge Quality: Heat-sealed edges for durability
+- Standards Compliance: Meets general ID card accessory standards
+- Lifespan: 2-3 years under normal usage conditions', 80.00, 'id-card-pouch.png', '2025-11-16 21:28:49', '2025-11-17 00:57:11'),
+(23, NULL, 'Premium PVC Card', 'The Premium PVC Card is a high-end identification solution crafted from superior-grade polyvinyl chloride (PVC) material for exceptional durability and professional appearance. This standard CR80 sized card (85.6mm x 54mm) is designed for organizations that demand the highest quality identification cards for executive IDs, VIP access cards, and premium membership cards. The card features a premium glossy or matte finish that enhances print quality and provides superior resistance to wear, fading, and environmental factors. The advanced PVC material ensures long-lasting performance with excellent printability on both sides using various printing technologies including UV, dye-sublimation, and laser engraving. With its superior quality and professional appearance, this card is perfect for organizations that want to make a strong impression while providing reliable identification solutions.
+
+Specifications:
+- Material: Premium-grade PVC (Polyvinyl Chloride)
+- Dimensions: CR80 standard (85.6mm x 54mm x 0.76mm)
+- Thickness: 0.76mm (30 mil)
+- Surface Finish: Premium glossy or matte options
+- Print Compatibility: Compatible with UV, dye-sublimation, and laser printers
+- Operating Temperature: -20°C to +60°C
+- Storage Temperature: -30°C to +70°C
+- Humidity Resistance: 10% to 90% non-condensing
+- Durability: Excellent resistance to bending, scratching, and fading
+- Print Area: Full surface coverage on both sides
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: ISO/IEC 7810 ID-1 format
+- Optional Features: Holographic overlay, magnetic stripe, barcode
+- Lifespan: 5-7 years under normal usage conditions', 150.00, 'id-card-uv-printed-pvc.png', '2025-11-16 21:28:49', '2025-11-17 00:57:11'),
+(24, NULL, 'Nylon Lanyard with Breakaway', 'The Nylon Lanyard with Breakaway is a premium quality identification accessory made from strong and durable nylon material that offers excellent strength and longevity with added safety features. This lanyard features a smooth, soft texture that is comfortable to wear while providing superior durability and resistance to fraying. The standard 20mm width is ideal for sublimation printing, allowing for vibrant, full-color designs that won\'t fade or crack over time. With an adjustable length, this lanyard is perfect for employee ID cards, visitor passes, and event badges. The durable construction ensures it can withstand daily use in various environments, from corporate offices to industrial settings. The key feature of this lanyard is the integrated breakaway safety mechanism that automatically releases under pressure, providing added security in situations where the lanyard might get caught or pulled. This makes it particularly suitable for environments where safety is a priority, such as schools, hospitals, and industrial facilities.
+
+Specifications:
+- Material: High-quality nylon fabric
+- Width: 20mm (standard)
+- Length: 900mm (adjustable)
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions', 45.00, 'lanyard_poly.png', '2025-11-16 21:28:49', '2025-11-17 00:59:40'),
+(25, NULL, 'Custom Printed Lanyard', 'The Custom Printed Lanyard is a premium identification accessory that offers fully personalized printing to showcase your brand, logo, or message with vibrant colors and sharp details. This printed lanyard is made from premium polyester or nylon material that ensures durability and long-lasting performance. Using advanced sublimation printing technology, we create full-color designs that won\'t fade, crack, or peel over time, even with regular use and washing. Our printing process allows for complete customization, including your company logo, tagline, artwork, or any graphics that represent your brand identity. The lanyard features a smooth, soft texture that is comfortable to wear while providing superior strength and resistance to fraying. With a standard width of 20mm and adjustable length, this printed lanyard is perfect for employee ID cards, visitor passes, and event badges. Available with various attachment options including breakaway clips, lobster clasps, and metal swivels for added safety and convenience.
+
+Specifications:
+- Material: High-quality polyester or nylon fabric
+- Width: 20mm (standard)
+- Length: 900mm (adjustable)
+- Printing Method: Sublimation printing for vibrant colors
+- Color Fastness: Excellent fade resistance
+- Durability: Resistant to fraying and wear
+- Attachment Options: Breakaway clip, lobster clasp, metal swivel
+- Safety Features: Breakaway release mechanism available
+- Operating Temperature: -10°C to +50°C
+- Washability: Hand wash recommended
+- Edge Finish: Heat-sealed edges to prevent fraying
+- Standards Compliance: Meets general textile accessory standards
+- Lifespan: 2-3 years under normal usage conditions
+- Customization: Full-color printing, logo placement', 65.00, 'lanyard_print.png', '2025-11-16 21:28:49', '2025-11-17 00:59:40'),
+(26, NULL, 'Clip-On Badge Holder', 'The Clip-On Badge Holder is a versatile and practical accessory designed to securely hold and display standard identification badges while providing convenient attachment to clothing, uniforms, or lanyards. This holder features a sturdy plastic construction with a reliable clip mechanism that ensures your badge stays in place during daily activities. The clear design maintains full visibility of the enclosed badge while providing protection against wear, moisture, and minor impacts. The compact 75x50mm size accommodates most standard badges and ID cards, making it ideal for employee identification, visitor passes, and event credentials. The smooth surface can also be customized with printing if needed. With its lightweight design and secure clip attachment, this badge holder is perfect for corporate environments, healthcare facilities, educational institutions, and events where quick and easy identification is required.
+
+Specifications:
+- Material: Clear durable plastic (PVC or PETG)
+- Dimensions: 80mm x 55mm x 2mm (with badge accommodation)
+- Thickness: 2mm standard
+- Surface Finish: Clear, smooth finish
+- Attachment Options: Secure clip-on mechanism
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge accessory standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Optional printing available', 25.00, 'badge_plastic.png', '2025-11-16 21:28:49', '2025-11-17 01:02:09'),
+(27, NULL, 'Magnetic Badge Holder', 'The Magnetic Badge Holder is a premium identification accessory that utilizes a strong magnetic attachment system for secure and convenient wear. This holder features a sturdy plastic construction with a powerful magnetic backing that provides a reliable hold to metal surfaces while allowing for easy removal when needed. The clear design maintains full visibility of the enclosed badge while providing protection against wear, moisture, and minor impacts. The compact 75x50mm size accommodates most standard badges and ID cards, making it ideal for employee identification, visitor passes, and event credentials. The smooth surface can also be customized with printing if needed. With its strong magnetic hold and professional appearance, this badge holder is perfect for corporate environments, trade shows, and events where quick and secure identification is required. The magnetic backing provides a strong hold that won\'t easily come loose during normal activities while still allowing for easy removal when necessary.
+
+Specifications:
+- Material: Clear durable plastic (PVC or PETG) with magnetic backing
+- Dimensions: 80mm x 55mm x 3mm (including magnetic backing)
+- Thickness: 3mm standard
+- Surface Finish: Clear, smooth finish
+- Attachment Options: Strong magnetic backing
+- Magnetic Strength: Holds securely to metal surfaces
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge accessory standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Optional printing available', 30.00, 'badge_plastic.png', '2025-11-16 21:28:49', '2025-11-17 01:02:09'),
+(28, NULL, 'Nylon Lanyards', 'Strong nylon lanyard with breakaway safety feature. Ideal for security and safety requirements.', 45.00, 'lanyard_poly.png', '2025-11-16 21:33:31', '2025-11-16 21:33:31'),
+(29, NULL, 'Lanyard Prints', 'Custom printed lanyard with your logo, text, or design. Perfect for branding and events.', 60.00, 'lanyard_print.png', '2025-11-16 21:33:31', '2025-11-16 21:33:31'),
+(30, NULL, 'Customized Lanyards', 'Fully customized lanyard with personalized design, colors, and branding options.', 65.00, 'lanyard_print.png', '2025-11-16 21:33:31', '2025-11-16 21:33:31');
+INSERT INTO `products` (`id`, `category_id`, `title`, `description`, `price`, `image`, `created_at`, `updated_at`) VALUES
+(31, NULL, 'Plastic Badges', 'The Plastic Badges are durable and professional identification solutions designed for temporary or permanent use in various environments. These badges feature a sturdy plastic construction that resists bending, cracking, and fading, ensuring long-lasting performance. The compact 75x50mm size makes them ideal for attaching to uniforms, clothing, or lanyards while maintaining visibility. The smooth surface accepts high-quality printing, allowing for clear text, logos, and graphics that enhance your organization\'s professional image. With their lightweight design and secure attachment options, these badges are perfect for employee identification, visitor passes, and event credentials. The plastic material is easy to clean and maintain, making it suitable for use in healthcare, hospitality, retail, and industrial settings. Available in bulk quantities with various attachment methods including clips, pins, and magnetic backs for versatile application.
+
+Specifications:
+- Material: Durable plastic (PVC or ABS)
+- Dimensions: 75mm x 50mm x 2mm
+- Thickness: 2mm standard
+- Surface Finish: Smooth, printable surface
+- Print Area: Full surface coverage
+- Print Compatibility: Compatible with standard badge printers
+- Attachment Options: Clip, pin, magnetic back available
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Full-color printing, bulk quantities available', 35.00, 'badge_plastic.png', '2025-11-16 21:33:31', '2025-11-17 01:02:09'),
+(32, NULL, 'Clip Badges', 'The Clip Badges are versatile and durable identification solutions designed for temporary or permanent use in various environments. These badges feature a sturdy plastic construction with integrated clip mechanisms that allow for easy attachment and removal from clothing, uniforms, or lanyards. The compact design makes them ideal for visitor passes, event credentials, and temporary identification needs. The smooth surface accepts high-quality printing, allowing for clear text, logos, and graphics that enhance your organization\'s professional image. With their lightweight design and secure clip attachment, these badges are perfect for situations where quick and easy identification is needed. The plastic material is easy to clean and maintain, making it suitable for use in healthcare, hospitality, retail, and industrial settings. Available in bulk quantities for cost-effective solutions.
+
+Specifications:
+- Material: Durable plastic (PVC or ABS)
+- Dimensions: 75mm x 50mm x 2mm
+- Thickness: 2mm standard
+- Surface Finish: Smooth, printable surface
+- Print Area: Full surface coverage
+- Print Compatibility: Compatible with standard badge printers
+- Attachment Options: Integrated clip mechanism
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Full-color printing, bulk quantities available', 25.00, 'badge_plastic.png', '2025-11-16 21:33:31', '2025-11-17 01:02:09'),
+(33, NULL, 'Magnetic Badges', 'The Magnetic Badges are premium identification solutions that utilize a powerful magnetic attachment system for secure and convenient wear. These badges feature a sturdy plastic construction with strong magnetic backing that provides a reliable hold to metal surfaces while allowing for easy removal when needed. The compact 75x50mm size makes them ideal for employee identification, visitor passes, and event credentials. The smooth surface accepts high-quality printing, allowing for clear text, logos, and graphics that enhance your organization\'s professional image. With their strong magnetic hold and professional appearance, these badges are perfect for corporate environments, trade shows, and events where quick and secure identification is required. The magnetic backing provides a strong hold that won\'t easily come loose during normal activities while still allowing for easy removal when necessary. Available in bulk quantities for cost-effective solutions.
+
+Specifications:
+- Material: Durable plastic (PVC or ABS) with magnetic backing
+- Dimensions: 75mm x 50mm x 3mm
+- Thickness: 3mm standard (including magnetic backing)
+- Surface Finish: Smooth, printable surface
+- Print Area: Full surface coverage
+- Print Compatibility: Compatible with standard badge printers
+- Attachment Options: Strong magnetic backing
+- Magnetic Strength: Holds securely to metal surfaces
+- Durability: Resistant to bending, cracking, and fading
+- Operating Temperature: -10°C to +60°C
+- Storage Temperature: -20°C to +70°C
+- Humidity Resistance: Up to 85% non-condensing
+- Edge Quality: Precision cut with smooth edges
+- Standards Compliance: Meets general badge standards
+- Lifespan: 1-2 years under normal usage conditions
+- Customization: Full-color printing, bulk quantities available', 30.00, 'badge_plastic.png', '2025-11-16 21:33:31', '2025-11-17 01:02:09'),
+(34, 4, 'School Management System', 'Transform your school\'s operations with the **Simption School Management System**, a comprehensive ERP solution designed to streamline every aspect of academic and administrative management. Our powerful, user-friendly software empowers educators to focus on what matters most—providing quality education—while automating and simplifying complex administrative tasks.
+
+From student admission and fee collection to examination management and report card generation, our all-in-one platform provides a centralized system for all your school\'s needs. The integrated modules for library, hostel, and transport management ensure that every department is connected and working in harmony.
+
+Embrace the future of education with our advanced features, including RFID and biometric attendance, live bus tracking, and dedicated mobile apps for students, parents, and staff. Our online learning platform, complete with e-learning modules and online exams, makes it easy to transition to a blended learning environment.
+
+With the Simption School Management System, you can improve communication with parents through our integrated bulk SMS and push notification system, ensuring they are always up-to-date on their child\'s progress. Our robust security features and reliable 24/7 support provide peace of mind, knowing that your data is safe and that help is always just a call or click away.
+
+Join the 6200+ schools that trust Simption to simplify their management, enhance their productivity, and create a better learning environment for their students.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_school_management.png', '2025-11-16 21:52:43', '2025-11-16 21:52:43'),
+(35, 4, 'RFID & Face Recognition Attendance System', 'Modernize your attendance tracking with the **Simption RFID & Face Recognition Attendance System**. This powerful, dual-technology solution combines the speed and convenience of RFID cards with the security and accuracy of biometric face recognition, providing a seamless and foolproof way to manage attendance for students and staff.
+
+Our advanced system features a high-precision dual-lens camera with infrared capabilities, ensuring reliable face detection even in low-light conditions or complete darkness. The integrated RFID reader provides a quick and easy alternative for card-based check-ins. With real-time data synchronization to the central School Management ERP, you can monitor attendance, generate reports, and manage users from a single, user-friendly dashboard.
+
+One of the standout features of our system is the instant SMS and push notification alerts sent to parents the moment their child enters or leaves the school premises. This provides an extra layer of security and peace of mind for parents, knowing that their child is safe and accounted for.
+
+The Simption RFID & Face Recognition Attendance System is more than just an attendance tool; it\'s a complete access control solution. With its robust hardware and intelligent software, you can manage access to different areas of your campus, ensuring that only authorized individuals can enter restricted zones.
+
+Upgrade to a smarter, more secure, and more efficient way to manage attendance with the Simption RFID & Face Recognition Attendance System.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_attendance_system.png', '2025-11-16 21:53:39', '2025-11-16 21:53:39'),
+(36, 4, 'Live Bus Tracking System', 'Ensure the safety and security of your students with the **Simption Live Bus Tracking System**. Our advanced GPS tracking solution provides real-time visibility into your entire fleet of school buses, giving you complete control and peace of mind.
+
+With our intuitive web-based dashboard and dedicated mobile app, you can monitor the exact location of each bus, track its speed, and view its route history. The integrated parent app allows parents to track their child\'s bus in real-time, so they know exactly when to expect their child at the bus stop.
+
+Our Live Bus Tracking System is more than just a tracking tool; it\'s a complete fleet management solution. With features like route optimization, geofencing, and over-speeding alerts, you can improve the efficiency of your transport operations and ensure the safety of your students.
+
+The system also provides detailed reports on distance traveled, stoppage time, and fuel consumption, helping you to reduce costs and improve the overall performance of your fleet.
+
+Choose the Simption Live Bus Tracking System for a smarter, safer, and more efficient way to manage your school\'s transportation.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_bus_tracking.png', '2025-11-16 21:54:34', '2025-11-16 21:54:34'),
+(37, 4, 'Android Apps for School Management', 'Stay connected with your school community like never before with the **Simption Android Apps for School Management**. Our suite of dedicated mobile applications for students, parents, teachers, and administrators brings the power of our School Management System to your fingertips.
+
+**For Students & Parents:**
+The Student/Parent App provides a one-stop solution for all your academic needs. View attendance records, check homework assignments, access report cards, pay fees online, and stay informed about important school events and announcements.
+
+**For Teachers:**
+The Teacher App empowers educators to manage their daily tasks with ease. Mark attendance, upload homework, enter student marks, and communicate with parents, all from the convenience of your mobile device.
+
+**For Administrators:**
+The Administrator App provides a bird\'s-eye view of your entire school\'s operations. Access key data, monitor staff and student activity, and send school-wide announcements on the go.
+
+**For Bus Drivers:**
+The Bus Driver App streamlines your daily routes with features like student lists, pickup/drop-off points, and route navigation.
+
+With our secure, user-friendly, and feature-rich Android apps, you can enhance communication, improve transparency, and create a more connected and engaged school community.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_android_apps.png', '2025-11-16 21:55:31', '2025-11-16 21:55:31'),
+(38, 4, 'Online Academic Features', 'Embrace the future of education with the **Simption Online Academic Features**, a powerful e-learning platform that seamlessly integrates with our School Management System. Our suite of online tools empowers educators to create engaging and interactive learning experiences for students, whether they are in the classroom or at home.
+
+**Live Classes:**
+Conduct live, interactive classes with our built-in video conferencing solution. Share your screen, use the digital whiteboard, and engage with students in real-time, just as you would in a traditional classroom.
+
+**Online Exams:**
+Create and conduct secure online exams with ease. Our flexible exam module supports a variety of question types, from multiple-choice and true/false to short answer and essay questions. With automated grading and detailed performance analytics, you can save time and gain valuable insights into your students\' learning.
+
+**Smart Classes & Video Tutorials:**
+Bring your lessons to life with our rich library of digital content. Our Smart Classes feature includes engaging videos, animations, and interactive simulations that make learning fun and effective. You can also upload and share your own video tutorials for students to access anytime, anywhere.
+
+With the Simption Online Academic Features, you can create a flexible, engaging, and effective learning environment that meets the needs of today\'s students.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_online_features.png', '2025-11-16 21:56:28', '2025-11-16 21:56:28'),
+(39, 4, 'Bulk SMS Service', 'Reach your audience instantly and effectively with the **Simption Bulk SMS Service**. Our reliable and high-speed SMS gateway allows you to send thousands of messages per second, making it the perfect solution for all your communication needs.
+
+**Transactional SMS:**
+Keep your users informed with our transactional SMS service. Send important alerts, notifications, and one-time passwords (OTPs) with high-speed delivery and guaranteed reliability.
+
+**Promotional SMS:**
+Promote your products and services with our promotional SMS service. Reach thousands of potential customers with a single click and track the performance of your campaigns with our real-time delivery reports.
+
+**Easy Integration:**
+Our developer-friendly API makes it easy to integrate SMS functionality into your own applications. Whether you\'re a school looking to improve parent communication or a business looking to run a marketing campaign, our Bulk SMS Service has you covered.
+
+Choose the Simption Bulk SMS Service for a reliable, affordable, and effective way to communicate with your audience.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_bulk_sms.png', '2025-11-16 21:57:38', '2025-11-16 21:57:38'),
+(40, 4, 'Student Management', 'The **Simption Student Management** module is a powerful and comprehensive Student Information System (SIS) that simplifies and automates all aspects of student administration. From online admissions to graduation, our module provides a centralized platform to manage the entire student lifecycle.
+
+With our intuitive interface, you can easily manage student admissions, create detailed student profiles, track daily and subject-wise attendance, and maintain academic records. The module also includes a robust communication system that allows you to send individual or group messages to students and parents, ensuring that everyone stays informed.
+
+The Student Management module seamlessly integrates with all other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_student_management.png', '2025-11-16 22:31:14', '2025-11-16 22:31:14'),
+(41, 4, 'Staff Management', 'The **Simption Staff Management** module is a complete Human Resource Management System (HRMS) designed to simplify and automate all aspects of staff administration. From recruitment to retirement, our module provides a centralized platform to manage the entire employee lifecycle.
+
+With our user-friendly interface, you can easily maintain employee records, automate payroll processing, manage leave requests, and track employee performance. The module also includes a powerful reporting system that provides valuable insights into your workforce.
+
+The Staff Management module seamlessly integrates with the Attendance Management and other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_staff_management.png', '2025-11-16 22:31:39', '2025-11-16 22:31:39'),
+(42, 4, 'Account Management', 'The **Simption Account Management** module is a comprehensive financial accounting solution designed to simplify and automate all aspects of school finance. From fee collection to financial reporting, our module provides a centralized platform to manage all your financial transactions.
+
+With our intuitive interface, you can easily manage fee structures, track expenses, maintain a general ledger, and generate a variety of financial reports. The module also includes a powerful dashboard that provides a real-time overview of your school\'s financial health.
+
+The Account Management module seamlessly integrates with the Fee Management and other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_account_management.png', '2025-11-16 22:32:03', '2025-11-16 22:32:03'),
+(43, 4, 'Admission Management', 'The **Simption Admission Management** module is a complete online admission solution that simplifies and automates the entire admission process. From application submission to enrollment, our module provides a centralized platform to manage all your admission-related tasks.
+
+With our user-friendly interface, you can easily create customizable online application forms, securely manage document uploads, track the status of all applications, and automatically generate merit lists. The module also includes a powerful communication system that allows you to send automated emails and SMS alerts to applicants.
+
+The Admission Management module seamlessly integrates with the Student Management and other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_admission_management.png', '2025-11-16 22:32:29', '2025-11-16 22:32:29'),
+(44, 4, 'Principal Desk', 'The **Simption Principal Desk** is a powerful and intuitive dashboard that provides a 360-degree view of your entire school\'s operations. Designed specifically for school principals and administrators, our module provides a centralized platform to monitor, manage, and communicate with your entire school community.
+
+With our real-time analytics, you can get instant insights into student attendance, staff performance, and financial data. The communication hub allows you to send announcements, circulars, and messages to staff, students, and parents with a single click. The module also includes a powerful report generation tool that allows you to create a variety of reports for analysis and decision-making.
+
+The Principal Desk seamlessly integrates with all other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_principal_desk.png', '2025-11-16 22:32:53', '2025-11-16 22:32:53'),
+(45, 4, 'Fees Management', 'The **Simption Fees Management** module is a comprehensive fee collection and management system that simplifies and automates the entire fee management process. From creating fee structures to generating fee reports, our module provides a centralized platform to manage all your fee-related tasks.
+
+With our user-friendly interface, you can easily create and manage different fee structures, collect fees online through multiple payment gateways, send automated fee reminders to parents, and generate a variety of reports on fee collections, dues, and defaulters.
+
+The Fees Management module seamlessly integrates with the Account Management and other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_fees_management.png', '2025-11-16 22:33:16', '2025-11-16 22:33:16'),
+(46, 4, 'ID Card Generation', 'The **Simption ID Card Generation** module is a powerful and easy-to-use ID card design and printing software that simplifies the entire ID card creation process. From designing professional ID cards to printing them in bulk, our module provides a centralized platform to manage all your ID card-related tasks.
+
+With our user-friendly drag-and-drop designer, you can create professional-looking ID cards in minutes. The module automatically fetches student and staff data from the database, so you don\'t have to worry about manual data entry. You can also add barcodes and QR codes to your ID cards for easy scanning.
+
+The ID Card Generation module seamlessly integrates with the Student Management and Staff Management modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_id_card_generation.png', '2025-11-16 22:33:42', '2025-11-16 22:33:42'),
+(47, 4, 'Marksheet Generation', 'The **Simption Marksheet Generation** module is a powerful and easy-to-use examination and marksheet software that simplifies the entire marksheet creation process. From creating exams and entering marks to generating and printing professional-looking marksheets, our module provides a centralized platform to manage all your exam-related tasks.
+
+With our user-friendly interface, you can easily create and manage different exams and grading systems, enter and manage student marks, and automatically generate and print professional-looking marksheets. The module also allows you to create and customize report cards with student photos, grades, and teacher comments.
+
+The Marksheet Generation module seamlessly integrates with the Student Management and other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_marksheet_generation.png', '2025-11-16 22:34:11', '2025-11-16 22:34:11'),
+(48, 4, 'Time Table Management', 'The **Simption Time Table Management** module is a powerful and easy-to-use timetable scheduling software that simplifies the entire timetable creation process. From automatically generating a balanced and clash-free timetable to making manual adjustments with a drag-and-drop interface, our module provides a centralized platform to manage all your timetable-related tasks.
+
+With our intelligent algorithm, you can automatically generate a timetable for the entire institution in minutes. The module takes into account teacher availability, classroom capacity, and other constraints to create an optimized and efficient timetable. You can also easily make manual adjustments to the timetable with our user-friendly drag-and-drop interface.
+
+The Time Table Management module seamlessly integrates with the Student Management and Staff Management modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_time_table_management.png', '2025-11-16 22:34:38', '2025-11-16 22:34:38'),
+(49, 4, 'Certificate Generation', 'The **Simption Certificate Generation** module is a powerful and easy-to-use certificate design and generation software that simplifies the entire certificate creation process. From designing professional certificates to generating them in bulk, our module provides a centralized platform to manage all your certificate-related tasks.
+
+With our user-friendly drag-and-drop designer, you can create professional-looking certificates in minutes. The module automatically fetches student and staff data from the database, so you don\'t have to worry about manual data entry. You can also create and save your own certificate templates for future use.
+
+The Certificate Generation module seamlessly integrates with the Student Management and Staff Management modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_certificate_generation.png', '2025-11-16 22:35:05', '2025-11-16 22:35:05'),
+(50, 4, 'TC (Transfer Certificate) Generation', 'The **Simption TC (Transfer Certificate) Generation** module is a powerful and easy-to-use software that simplifies the entire TC creation process. From automatically generating TCs with all the required information to printing them in bulk, our module provides a centralized platform to manage all your TC-related tasks.
+
+With our user-friendly interface, you can automatically generate TCs in minutes. The module automatically fetches student data from the database, so you don\'t have to worry about manual data entry. You can also create and save your own TC templates for future use.
+
+The TC Generation module seamlessly integrates with the Student Management module of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_tc_generation.png', '2025-11-16 22:35:34', '2025-11-16 22:35:34'),
+(51, 4, 'Admit Card Generation', 'The **Simption Admit Card Generation** module is a powerful and easy-to-use software that simplifies the entire admit card creation process. From automatically generating admit cards with all the required information to printing them in bulk, our module provides a centralized platform to manage all your admit card-related tasks.
+
+With our user-friendly interface, you can automatically generate admit cards in minutes. The module automatically fetches student data from the database, so you don\'t have to worry about manual data entry. You can also create and save your own admit card templates for future use.
+
+The Admit Card Generation module seamlessly integrates with the Student Management and Examination modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_admit_card_generation.png', '2025-11-16 22:36:03', '2025-11-16 22:36:03'),
+(52, 4, 'Homework Management', 'The **Simption Homework Management** module is a powerful and easy-to-use homework and assignment management system that simplifies the entire homework process. From creating and assigning homework to grading and providing feedback, our module provides a centralized platform to manage all your homework-related tasks.
+
+With our user-friendly interface, teachers can easily create and assign homework with attachments and deadlines. Students can submit their homework online, and teachers can track the status of homework submission for all students. The module also allows teachers to grade homework and provide feedback to students.
+
+The Homework Management module seamlessly integrates with the Student Management and Teacher App modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_homework_management.png', '2025-11-16 22:36:32', '2025-11-16 22:36:32'),
+(53, 4, 'Question Paper Management', 'The **Simption Question Paper Management** module is a powerful and easy-to-use question bank and exam paper generator that simplifies the entire question paper creation process. From creating a large repository of questions to automatically generating question papers, our module provides a centralized platform to manage all your exam paper-related tasks.
+
+With our user-friendly interface, you can easily create and manage a question bank with different difficulty levels and topics. The module allows you to automatically generate question papers based on predefined templates and question selection criteria. You can also print question papers directly or export them to PDF and Word formats.
+
+The Question Paper Management module seamlessly integrates with the Examination and Online Exam modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_question_paper_management.png', '2025-11-16 22:37:01', '2025-11-16 22:37:01'),
+(54, 4, 'Hostel Management', 'The **Simption Hostel Management** module is a comprehensive hostel and accommodation management system that simplifies and automates all aspects of hostel administration. From room allocation to mess management, our module provides a centralized platform to manage all your hostel-related tasks.
+
+With our user-friendly interface, you can easily allocate rooms to students, manage mess menus and billing, track visitors, and monitor student attendance in the hostel. The module also includes a powerful reporting system that provides valuable insights into your hostel\'s operations.
+
+The Hostel Management module seamlessly integrates with the Student Management and Fees Management modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_hostel_management.png', '2025-11-16 22:37:35', '2025-11-16 22:37:35'),
+(55, 4, 'Library Management', 'The **Simption Library Management** module is a complete library automation system that simplifies and automates all aspects of library administration. From book cataloging to circulation management, our module provides a centralized platform to manage all your library-related tasks.
+
+With our user-friendly interface, you can easily create and manage a comprehensive catalog of all your books, manage book issues and returns, and automatically calculate and manage fines for overdue books. The module also includes an Online Public Access Catalog (OPAC) that allows students and staff to search for books online.
+
+The Library Management module seamlessly integrates with the Student Management and Staff Management modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_library_management.png', '2025-11-16 22:38:13', '2025-11-16 22:38:13'),
+(56, 4, 'Downloads Management', 'The **Simption Downloads Management** module is a powerful and easy-to-use content and document sharing platform that simplifies the entire content sharing process. From uploading and organizing content to controlling access and tracking downloads, our module provides a centralized platform to manage all your content sharing-related tasks.
+
+With our user-friendly interface, you can easily upload and share a variety of content, including documents, videos, and presentations. You can organize content into folders and subfolders for easy access, and you can control who can access and download content based on user roles. The module also allows you to track who has downloaded which content and when.
+
+The Downloads Management module seamlessly integrates with the Student Management and Staff Management modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_downloads_management.png', '2025-11-16 22:38:41', '2025-11-16 22:38:41'),
+(57, 4, 'Stocks Management', 'The **Simption Stocks Management** module is a powerful and easy-to-use inventory and stock management system that simplifies the entire stock management process. From creating and managing a comprehensive list of all your stock items to generating a variety of reports on stock levels, consumption, and purchases, our module provides a centralized platform to manage all your stock-related tasks.
+
+With our user-friendly interface, you can easily create and manage a comprehensive list of all your stock items, track the quantity of each item in stock, create and manage purchase orders for new stock, and generate a variety of reports on stock levels, consumption, and purchases.
+
+The Stocks Management module seamlessly integrates with the Account Management module of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_stocks_management.png', '2025-11-16 22:39:10', '2025-11-16 22:39:10'),
+(58, 4, 'User Creation', 'The **Simption User Creation** module is a powerful and easy-to-use user and role management system that simplifies the entire user management process. From creating and managing user accounts to controlling user access to different modules and features of the ERP system, our module provides a centralized platform to manage all your user-related tasks.
+
+With our user-friendly interface, you can easily create, manage, and disable user accounts for students, staff, and parents. You can also create and manage different user roles with different permissions, and you can control user access to different modules and features of the ERP system. The module also includes an audit trail that tracks all user activity in the system.
+
+The User Creation module seamlessly integrates with all other modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_user_creation.png', '2025-11-16 22:39:33', '2025-11-16 22:39:33'),
+(59, 4, 'Online Results', 'The **Simption Online Results** module is a powerful and easy-to-use online result publication system that simplifies the entire result publication process. From publishing exam results online to providing a graphical analysis of student performance, our module provides a centralized platform to manage all your result-related tasks.
+
+With our user-friendly interface, you can easily publish exam results online for students and parents to view. Students can securely access their results with a unique username and password, and they can view detailed marksheets with subject-wise marks and grades. The module also provides a graphical analysis of student performance over time.
+
+The Online Results module seamlessly integrates with the Marksheet Generation and Student App modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_online_results.png', '2025-11-16 22:39:55', '2025-11-16 22:39:55'),
+(60, 4, 'Online Homework', 'The **Simption Online Homework** module is a powerful and easy-to-use online homework and assignment platform that simplifies the entire homework process. From creating and assigning homework to grading and providing feedback, our module provides a centralized platform to manage all your homework-related tasks.
+
+With our user-friendly interface, teachers can easily create and assign homework with attachments, deadlines, and multimedia content. Students can submit their homework online from any device, and teachers can automatically grade multiple-choice and true/false questions. The module also allows teachers to provide feedback to students and facilitate online discussions.
+
+The Online Homework module seamlessly integrates with the Homework Management and Student App modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_online_homework.png', '2025-11-16 22:40:16', '2025-11-16 22:40:16'),
+(61, 4, 'Online Fees Payment', 'The **Simption Online Fees Payment** module is a secure and convenient online payment gateway integration that simplifies the entire fee payment process. From supporting multiple payment gateways to generating real-time fee receipts, our module provides a centralized platform to manage all your fee payment-related tasks.
+
+With our user-friendly interface, parents can easily pay their child\'s fees online from anywhere, at any time. All transactions are processed through a secure and encrypted connection, and parents receive real-time fee receipts via email and SMS. The module also allows you to view a complete history of all fee payments.
+
+The Online Fees Payment module seamlessly integrates with the Fees Management and Student App modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_online_fees_payment.png', '2025-11-16 22:40:41', '2025-11-16 22:40:41'),
+(62, 4, 'Online Attendance', 'The **Simption Online Attendance** module is a powerful and easy-to-use online attendance tracking system that simplifies the entire attendance tracking process. From tracking student attendance in real-time to sending automated attendance alerts to parents, our module provides a centralized platform to manage all your attendance-related tasks.
+
+With our user-friendly interface, you can easily track student attendance in real-time from anywhere, at any time. The module supports a variety of attendance methods, including biometric, RFID, and manual entry. You can also generate a variety of reports on student attendance, and you can send automated attendance alerts to parents via SMS and email.
+
+The Online Attendance module seamlessly integrates with the Attendance Management and Student App modules of the Simption School Management ERP, providing a unified and efficient solution for your institution.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_online_attendance.png', '2025-11-16 22:41:14', '2025-11-16 22:41:14'),
+(63, 4, 'Website Development', 'The **Simption Website Development** service provides custom website design and development solutions for schools, colleges, universities, and businesses of all sizes. We create beautiful, functional, and user-friendly websites that will help you achieve your online goals.
+
+Our team of experienced designers and developers will work with you to create a website that is tailored to your specific needs. We use the latest technologies and best practices to ensure that your website is fast, secure, and easy to use.
+
+Whether you need a simple brochure website or a complex e-commerce platform, we have the skills and expertise to deliver a solution that meets your needs and exceeds your expectations.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_website_development.png', '2025-11-16 22:41:47', '2025-11-16 22:41:47'),
+(64, 4, 'Software Development', 'The **Simption Software Development** service provides custom software development solutions for businesses of all sizes. We build high-quality, scalable, and secure software applications that will help you achieve your business goals.
+
+Our team of experienced software engineers will work with you to understand your specific needs and develop a solution that is tailored to your business. We use the latest technologies and best practices to ensure that your software is fast, reliable, and easy to use.
+
+Whether you need a simple web application or a complex enterprise system, we have the skills and expertise to deliver a solution that meets your needs and exceeds your expectations.
+
+**Buy Link:** `https://simption.com/`', 0.00, 'erp_software_development.png', '2025-11-16 22:42:11', '2025-11-16 22:42:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_requests`
+--
+
+CREATE TABLE `quote_requests` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `company` varchar(200) DEFAULT NULL,
+  `interests` text DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'New',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `quote_requests`
+--
+
+INSERT INTO `quote_requests` (`id`, `name`, `email`, `phone`, `company`, `interests`, `message`, `status`, `created_at`) VALUES
+(1, 'Abhishek Choudhary', 'abhishekcse2004@gmail.com', '08305978787', 'Rajiv Gandhi Proudyogiki Vishwavidyala, Bhopal', 'Attendance Systems', 'tell me about ir', 'New', '2025-10-15 12:05:58'),
+(2, 'Abhishek Choudhary', 'abhishekcse2004@gmail.com', '08305978787', 'Rajiv Gandhi Proudyogiki Vishwavidyala, Bhopal', 'ID Cards, Lanyards & Badges, Attendance Systems, ERP Solutions', 'i want all your services', 'New', '2025-10-16 20:01:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `is_verified` tinyint(1) DEFAULT 0,
+  `is_admin` tinyint(1) DEFAULT 0,
+  `verify_code` varchar(128) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `is_verified`, `is_admin`, `verify_code`, `created_at`, `updated_at`) VALUES
+(1, 'Abhishek Choudhary', 'abhishekcse2004@gmail.com', '$2y$10$F9kvQN.BtiXWkHn/Th7mPOMBoFa9jO6YjWDhqFSkOhCftOvgRiatC', 1, 1, NULL, '2025-10-08 03:07:44', '2025-11-04 06:21:36'),
+(5, 'Admin', 'admin@test.com', '$2y$10$pYp.m27xU2H3ybiBVgTuqOyqHYVxOTV/0x.BE9lSQrwWSCE4kQ4Ym', 1, 1, NULL, '2025-10-15 09:22:12', '2025-10-15 09:31:55'),
+(6, 'Abhi', 'hello@gmail.com', '$2y$10$jlaDt.0sbudBvPkVmSVjUOJ95VTL7AZVDqO9i1eEGUP1LWAAJpBqS', 1, 0, '9d24eb1fc8b45cfb07e5109d7ef48af7', '2025-10-15 10:00:12', '2025-10-15 10:01:04'),
+(16, 'abhi', 'anujchoudhary7108@gmail.com', '$2y$10$kPfjrY.9ajlSPKvmcUb2JO8HxF5ejBtLHYequA1YoW/s6jbz.3LW6', 1, 1, NULL, '2025-10-31 12:30:29', '2025-11-04 06:21:48'),
+(17, 'Nayan', 'bhikuch142@gmail.com', '$2y$10$w9v/vfVYXA.CYA4cd8mCt.wcimx0gzntLBOi4CvZXQ/sCQTTqhgTm', 1, 0, '860e8e59af978223d397a7928072ba36', '2025-11-05 11:36:47', '2025-11-05 11:38:47'),
+(18, 'Dev', 'devendra.simption@gmail.com', '$2y$10$vQZTiNZbpcyxa0.O.wLiUuE4SXHH0N4pIbk/GwOrCHilC5K3Jdb9a', 0, 0, 'd4527c2d73467cd6d3098ea8f067efb4', '2025-11-17 11:48:44', '2025-11-17 11:48:44');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `attendance_types`
+--
+ALTER TABLE `attendance_types`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `idx_slug` (`slug`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `clients`
+--
+ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `erp_modules`
+--
+ALTER TABLE `erp_modules`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `idx_slug` (`slug`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_title` (`title`),
+  ADD KEY `idx_category_id` (`category_id`);
+
+--
+-- Indexes for table `quote_requests`
+--
+ALTER TABLE `quote_requests`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `idx_email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `attendance_types`
+--
+ALTER TABLE `attendance_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
