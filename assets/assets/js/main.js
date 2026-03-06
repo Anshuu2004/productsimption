@@ -100,48 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.stopPropagation();
                 return false;
             });
-
-        // Mobile (<992px): enable click-to-open for dropdowns while keeping links navigable on second tap
-        if (window.innerWidth < 992) {
-            const mobileDropdowns = document.querySelectorAll('.navbar .nav-item.dropdown');
-            mobileDropdowns.forEach(function(item) {
-                const toggleLink = item.querySelector('.nav-link');
-                const menu = item.querySelector('.dropdown-menu');
-                if (!toggleLink || !menu) return;
-
-                let openedOnce = false;
-
-                toggleLink.addEventListener('click', function(e) {
-                    // If menu not open, open it and prevent navigation on first tap
-                    const isOpen = menu.classList.contains('show');
-                    if (!isOpen) {
-                        // Close any other open mobile dropdown menus
-                        document.querySelectorAll('.navbar .dropdown-menu.show').forEach(function(openMenu) {
-                            openMenu.classList.remove('show');
-                        });
-                        menu.classList.add('show');
-                        openedOnce = true;
-                        e.preventDefault();
-                        return;
-                    }
-
-                    // If already open and it's the first tap state, allow next tap to navigate
-                    if (openedOnce) {
-                        // reset flag so subsequent taps follow normal behavior
-                        openedOnce = false;
-                        return; // allow default navigation
-                    }
-                });
-
-                // Close menu when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!item.contains(event.target)) {
-                        menu.classList.remove('show');
-                        openedOnce = false;
-                    }
-                });
-            });
-        }
         });
         
         // Handle image preview for dropdown menus (desktop only)
@@ -155,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             linksContainers.forEach(function(linksContainer) {
                 linksContainer.querySelectorAll('a').forEach(function(link) {
-                    const newImage = this.getAttribute('data-image');
+                    const newImage = link.getAttribute('data-image');
                     if (newImage) {
                         previewImage.src = newImage;
                     }
@@ -168,6 +126,48 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // Mobile (<992px): enable click-to-open for dropdowns while keeping links navigable on second tap
+    if (window.innerWidth < 992) {
+        const mobileDropdowns = document.querySelectorAll('.navbar .nav-item.dropdown');
+        mobileDropdowns.forEach(function(item) {
+            const toggleLink = item.querySelector('.nav-link');
+            const menu = item.querySelector('.dropdown-menu');
+            if (!toggleLink || !menu) return;
+
+            let openedOnce = false;
+
+            toggleLink.addEventListener('click', function(e) {
+                // If menu not open, open it and prevent navigation on first tap
+                const isOpen = menu.classList.contains('show');
+                if (!isOpen) {
+                    // Close any other open mobile dropdown menus
+                    document.querySelectorAll('.navbar .dropdown-menu.show').forEach(function(openMenu) {
+                        openMenu.classList.remove('show');
+                    });
+                    menu.classList.add('show');
+                    openedOnce = true;
+                    e.preventDefault();
+                    return;
+                }
+
+                // If already open and it's the first tap state, allow next tap to navigate
+                if (openedOnce) {
+                    // reset flag so subsequent taps follow normal behavior
+                    openedOnce = false;
+                    return; // allow default navigation
+                }
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!item.contains(event.target)) {
+                    menu.classList.remove('show');
+                    openedOnce = false;
+                }
+            });
+        });
+    }
 
     // Handle quantity input
     const quantityInputs = document.querySelectorAll('.quantity-input');
