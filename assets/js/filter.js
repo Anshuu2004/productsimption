@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- Price Slider Initialization (noUiSlider) ---
     const priceSlider = document.getElementById('price-slider');
     let priceUpdateTimeout;
+    let slider;
 
     if (priceSlider) {
         const minPriceInput = document.getElementById('min_price');
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const minPriceValue = document.getElementById('price-min-value');
         const maxPriceValue = document.getElementById('price-max-value');
 
-        const slider = noUiSlider.create(priceSlider, {
+        slider = noUiSlider.create(priceSlider, {
             start: [minPriceInput.value, maxPriceInput.value],
             connect: true,
             range: {
@@ -183,8 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (clearAllButton) {
         clearAllButton.addEventListener('click', function() {
             filterForm.reset();
-            if (priceSlider) {
-                priceSlider.noUiSlider.set([0, 10000]);
+            if (slider) {
+                slider.set([0, 10000]);
             }
             fetchProducts();
         });
