@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const priceSlider = document.getElementById('price-slider');
     let priceUpdateTimeout;
 
-    if (priceSlider) {
+    if (priceSlider && typeof noUiSlider !== 'undefined') {
         const minPriceInput = document.getElementById('min_price');
         const maxPriceInput = document.getElementById('max_price');
         const minPriceValue = document.getElementById('price-min-value');
@@ -56,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         const params = new URLSearchParams(formData);
-        const url = `${BASE_URL}api/products.php?${params.toString()}`;
+        const baseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/';
+        const url = `${baseUrl}api/products.php?${params.toString()}`;
         
         try {
             const response = await fetch(url);
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- Event Listeners ---
     filterForm.addEventListener('change', function(e) {
-        if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+        if (e.target.type === 'checkbox' || e.target.type === 'radio' || e.target.tagName === 'SELECT') {
             fetchProducts();
         }
     });
